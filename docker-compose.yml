@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
-      - ./postgres-order:/data/postgres
+      - ./docker/postgres-order:/data/postgres
     expose:
       - "5431"
     ports:
@@ -28,7 +28,7 @@ services:
       POSTGRES_PASSWORD: password
       PGDATA: /data/postgres
     volumes:
-      - ./postgres-inventory:/data/postgres
+      - ./docker/postgres-inventory:/data/postgres
     ports:
       - "5432:5432"
     restart: always
@@ -43,14 +43,14 @@ services:
     expose:
       - "27017"
     volumes:
-      - ./mongo-data:/data/db
+      - ./docker/mongo-data:/data/db
 
   ## Keycloak Config with Mysql database
   keycloak-mysql:
     container_name: keycloak-mysql
     image: mysql:5.7
     volumes:
-      - ./mysql_keycloak_data:/var/lib/mysql
+      - ./docker/mysql_keycloak_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: keycloak
@@ -72,7 +72,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./realms/:/opt/keycloak/data/import/
+      - ./docker/realms/:/opt/keycloak/data/import/
     depends_on:
       - keycloak-mysql
 
@@ -191,7 +191,7 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./docker/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     depends_on:
       - product-service
       - inventory-service
@@ -207,7 +207,7 @@ services:
     links:
       - prometheus:prometheus
     volumes:
-      - ./grafana:/var/lib/grafana
+      - ./docker/grafana:/var/lib/grafana
     environment:
       - GF_SECURITY_ADMIN_USER=admin
       - GF_SECURITY_ADMIN_PASSWORD=password
